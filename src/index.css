@@ -37,7 +37,7 @@ body{
   grid-template-columns:.35fr .65fr;
   gap: 2rem;
   
-  padding: 1rem;
+  padding: 6rem 1rem;
 }
 
 /* ---------- SIDEBAR ----------- */
@@ -52,6 +52,7 @@ body{
 
 .sidebar .container{
   width: 80%;
+  max-width: 250px;
   
   background: #fff;
   border-radius: 10px;
@@ -121,7 +122,7 @@ body{
 }
 
 .grid_container_layout{
-  grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
   justify-content: center;
   
 }
