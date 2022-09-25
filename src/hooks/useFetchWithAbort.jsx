@@ -35,5 +35,5 @@ export const useFetchWithAbort = (URL) => {
   return () => controller.abort()
   },[])
   
-  return {data,setData}
+  return {data}
 }

@@ -1,14 +1,7 @@
 import photo from '../assets/photo.jpeg'
 import {X} from 'react-bootstrap-icons'
 
-export const NewsCard = ({post,setData,gridLayout,setFrameVisible}) => {
-  
-  const removeCard = (array) => {
-    
-  const updatedArray = array.filter(entry => entry.id !== post.id)
-  
-    return updatedArray
-  }
+export const NewsCard = ({post,gridLayout,setFrameVisible,removeNewsCard}) => {
   
   return (
   <figure 
@@ -27,7 +20,7 @@ export const NewsCard = ({post,setData,gridLayout,setFrameVisible}) => {
   </div>
   
   <button 
-  onClick={() => setData(removeCard)}
+  onClick={() => removeNewsCard(post.id)}
   className={
   `newscard_close_button ${gridLayout ? 'grid_layout_close_button':''}`
   }>

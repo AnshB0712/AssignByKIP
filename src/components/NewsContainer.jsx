@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { useFetchWithAbort } from '../hooks/useFetchWithAbort'
 
 import { NewsCard } from './NewsCard'
@@ -8,20 +8,26 @@ export const NewsContainer = ({
   gridLayout,
   setFrameVisible
 }) => {
-
+  
   const POST_URL = 'https://jsonplaceholder.typicode.com/posts'
   
-  const {data,setData} = useFetchWithAbort(POST_URL)
+  const {data} = useFetchWithAbort(POST_URL)
+  const [currentRecords,setCurrentRecords] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
   
-  const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage] = useState(6);
-  
+  const recordsPerPage = 6;
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
   
-  const currentRecords = data?.slice(indexOfFirstRecord,indexOfLastRecord);
+  useEffect(() => {
+   setCurrentRecords(
+     data?.slice(indexOfFirstRecord,indexOfLastRecord)
+     )
+ },[data,currentPage])
   
   const noOfPages = Math.ceil(data?.length / recordsPerPage)
+  
+  const removeNewsCard = (id) => setCurrentRecords(prev => prev.filter(post => post.id!==id))
   
   if(!data)
   return(
@@ -41,15 +47,19 @@ export const NewsContainer = ({
   `main_container_layout ${gridLayout ? 'grid_container_layout':''}`
   }>
   {
-  currentRecords.map(post => (
+  currentRecords?.length
+  ?
+  currentRecords?.map(post => (
   <NewsCard 
   gridLayout={gridLayout}
+  removeNewsCard={removeNewsCard}
   key={post.id} 
-  setData={setData}
   post={post} 
   setFrameVisible={setFrameVisible}
   />
   ))
+  :
+  <NoMoreData />
   }
   </main>
   <Pagination 
@@ -58,5 +68,17 @@ export const NewsContainer = ({
   setCurrentPage={setCurrentPage}
   />
   </div>
+  )
+}
+
+const NoMoreData = () => {
+  return(
+  <main style={{
+  minHieght:'500px',
+  display:'grid',
+  placeItems:'center'
+  }}>
+  <h2>No more data to show.</h2>
+  </main>
   )
 }
